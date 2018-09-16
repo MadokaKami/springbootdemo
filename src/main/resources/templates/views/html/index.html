@@ -1,0 +1,35 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--<link rel="shortcut icon" th:href="@{/favicon.ico}"/>
+    <link rel="bookmark" th:href="@{/favicon.ico}"/>-->
+</head>
+<body>
+<h2>Hello World!</h2>
+<a href="javascript:void(0);" id="createHtml" onclick="createHtml()">生成html模板...</a><br/>
+<a th:href="@{/freemarkerController/jumpFtl}" id="jumpFtl">跳转ftl</a>
+<a th:href="@{/test/toPage}" id="toTestPage">跳转testPage</a>
+<br/>
+bbb
+<br>
+</body>
+<script type="text/javascript" th:src="@{/jquery.js}"></script>
+<script type="text/javascript">
+    $(function () {
+    });
+    var basePath = '/*[[${#httpServletRequest.getScheme() + "://" + #httpServletRequest.getServerName() + ":" + #httpServletRequest.getServerPort() + #httpServletRequest.getContextPath()}]]*/';
+    function createHtml() {
+        $.ajax({
+            url: basePath + '/freemarkerController/creatingFreemarkerHtml',
+            data: {key: '123456'},
+            type: 'post',
+            //dataType: 'text',
+            success: function(data){
+                alert(data);
+            },
+            error: function (msg) {
+                alert(msg);
+            }
+        })
+    }
+</script>
+</html>
