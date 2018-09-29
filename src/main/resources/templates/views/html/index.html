@@ -2,21 +2,51 @@
 <head>
     <!--<link rel="shortcut icon" th:href="@{/favicon.ico}"/>
     <link rel="bookmark" th:href="@{/favicon.ico}"/>-->
+    <link rel="stylesheet" type="text/css" th:href="@{/toastr/toastr.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/fontAwesome/css/font-awesome.css}"/>
+    <script type="text/javascript" th:src="@{/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{/toastr/toastr.js}"></script>
+    <style type="text/css">
+        .toast-title{
+            font-size: 30px;
+        }
+        .toast-message{
+            font-size: 40px;
+        }
+    </style>
 </head>
 <body>
 <h2>Hello World!</h2>
+<input type="text" value="aaa">
 <a href="javascript:void(0);" id="createHtml" onclick="createHtml()">生成html模板...</a><br/>
 <a th:href="@{/freemarkerController/jumpFtl}" id="jumpFtl">跳转ftl</a>
 <a th:href="@{/test/toPage}" id="toTestPage">跳转testPage</a>
+<input type="button" onclick="toastr.success('成功','提示')" value="提示">
 <br/>
 bbb
 <br>
 </body>
-<script type="text/javascript" th:src="@{/jquery.js}"></script>
-<script type="text/javascript">
+
+<script type="text/javascript" th:inline="javascript">
     $(function () {
+        toastr.options = {
+            closeButton: false,
+            debug: true,
+            progressBar: false,
+            positionClass: "toast-top-center",
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "1000",
+            timeOut: "15000",
+            extendedTimeOut: "1000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut"
+        };
     });
-    var basePath = '/*[[${#httpServletRequest.getScheme() + "://" + #httpServletRequest.getServerName() + ":" + #httpServletRequest.getServerPort() + #httpServletRequest.getContextPath()}]]*/';
+    var basePath = '[[${#httpServletRequest.getScheme() + "://" + #httpServletRequest.getServerName() + ":" + #httpServletRequest.getServerPort() + #httpServletRequest.getContextPath()}]]';
+    console.log(basePath);
     function createHtml() {
         $.ajax({
             url: basePath + '/freemarkerController/creatingFreemarkerHtml',
