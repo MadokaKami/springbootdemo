@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <link href="../../../static/bootstrap-4.1.3/css/bootstrap.css"
+          th:href="@{/bootstrap-4.1.3/css/bootstrap.css}" type="text/css" rel="stylesheet"/>
+    <link href="../../../static/fontAwesome/css/font-awesome.css"
+          th:href="@{/fontAwesome/css/font-awesome.css}" type="text/css" rel="stylesheet"/>
+    <script src="../../../static/jquery.js"
+            th:src="@{/jquery.js}" type="text/javascript"></script>
+    <script src="../../../static/bootstrap-4.1.3/js/bootstrap.js"
+            th:src="@{/bootstrap-4.1.3/js/bootstrap.js}" type="text/javascript"></script>
+</head>
+<!--style="padding-top: 70px"-->
+<body class="pt-4 mt-5">
+    <div class="container mt-2 fixed-top">
+        <nav class="navbar navbar-expand navbar-dark bg-dark">
+            <a class="navbar-brand fa fa-bicycle" style="color: #ffc107"></a>
+            <ul class="nav navbar-nav">
+                <li href="#" class="nav-item active">
+                    <a class="nav-link">aaa</a>
+                </li>
+                <li href="#" class="nav-item">
+                    <a class="nav-link">bbb</a>
+                </li>
+                <li href="#" class="nav-item">
+                    <a class="nav-link">ccc</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 bg-secondary mr-1">
+                The value may indicate a suggestion for a logical component name,
+                to be turned into a Spring bean in case of an autodetected component.
+                return the suggested component name, if any (or empty String otherwise)1
+            </div>
+            <div class="col-md-7 alert alert-secondary">
+                The value may indicate a suggestion for a logical component name,
+                to be turned into a Spring bean in case of an autodetected component.
+                return the suggested component name, if any (or empty String otherwise)2
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <a class="btn btn-dark fa fa-apple btn-lg" data-toggle="modal"
+           data-target="#modalDemo" href="./modalPopHtml.html" th:href="@{/test/toModalPopHtml}">asdf</a>
+        <div class="modal fade" aria-labelledby="modalDemoLabel" id="modalDemo" role="dialog" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modalDemoLabel">模态框标签</h4>
+                        <button class="close" type="button" data-dismiss="modal">
+                            &times;
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        模态框体
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-light">关闭</button>
+                        <button type="button" class="btn btn-primary">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div style="height: 1000px"></div>
+</body>
+<script type="text/javascript">
+    $("#modalDemo").on("hide.bs.modal", function (){
+        return window.confirm("aaa");
+    })
+
+    $('#modalDemo').on('hidden.bs.modal', function (e) {
+        $(this).find('.modal-body').html(' 等待结果，请稍后...');
+        $(this).removeData('bs.modal');
+    }).on('show.bs.modal', function (e) {
+        // 手动处理下载入过程
+        var button = $(e.relatedTarget);
+        var modal = $(this);
+
+        modal.find('.modal-body').load(button.attr("href"));
+    });
+</script>
+</html>

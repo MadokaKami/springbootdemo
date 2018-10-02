@@ -2,16 +2,19 @@ package com.funnytree.springbootdemo.entity;
 
 import java.util.Date;
 
-import org.springframework.stereotype.Component;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-import lombok.Data;
-
-@Component
-@Data
+@Getter
+@Setter
+@Builder
 public class TestEntity {
+
     int testInt;
 
     String testString;
 
     Date testDate;
+
 }

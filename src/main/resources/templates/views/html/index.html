@@ -2,8 +2,11 @@
 <head>
     <!--<link rel="shortcut icon" th:href="@{/favicon.ico}"/>
     <link rel="bookmark" th:href="@{/favicon.ico}"/>-->
+    <meta charset="UTF-8" />
     <link rel="stylesheet" type="text/css" th:href="@{/toastr/toastr.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/fontAwesome/css/font-awesome.css}"/>
+    <link href="../../../static/fontAwesome/css/font-awesome.css"
+          th:href="@{/fontAwesome/css/font-awesome.css}" type="text/css" rel="stylesheet"/>
     <script type="text/javascript" th:src="@{/jquery.js}"></script>
     <script type="text/javascript" th:src="@{/toastr/toastr.js}"></script>
     <style type="text/css">
@@ -17,7 +20,7 @@
 </head>
 <body>
 <h2>Hello World!</h2>
-<input type="text" value="aaa">
+<input type="text" value="aaa" class="fa fa-area-chart">
 <a href="javascript:void(0);" id="createHtml" onclick="createHtml()">生成html模板...</a><br/>
 <a th:href="@{/freemarkerController/jumpFtl}" id="jumpFtl">跳转ftl</a>
 <a th:href="@{/test/toPage}" id="toTestPage">跳转testPage</a>
@@ -25,6 +28,7 @@
 <br/>
 bbb
 <br>
+<a href="/test/toBootStrapTest">toBootStrapTest</a>
 </body>
 
 <script type="text/javascript" th:inline="javascript">
@@ -42,7 +46,13 @@ bbb
             showEasing: "swing",
             hideEasing: "linear",
             showMethod: "fadeIn",
-            hideMethod: "fadeOut"
+            hideMethod: "fadeOut",
+            iconClasses: {
+                error: 'toast-error',
+                info: 'fa fa-apple',
+                success: 'toast-success fa fa-area-chart',
+                warning: 'toast-warning'
+            }
         };
     });
     var basePath = '[[${#httpServletRequest.getScheme() + "://" + #httpServletRequest.getServerName() + ":" + #httpServletRequest.getServerPort() + #httpServletRequest.getContextPath()}]]';
