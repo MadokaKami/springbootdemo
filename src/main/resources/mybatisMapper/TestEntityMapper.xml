@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.funnytree.springbootdemo.dao.TestEntityMapper">
+  <resultMap id="BaseResultMap" type="com.funnytree.springbootdemo.entity.TestEntity">
+    <result column="test_int" jdbcType="INTEGER" property="testInt" />
+    <result column="test_string" jdbcType="VARCHAR" property="testString" />
+    <result column="test_date" jdbcType="TIMESTAMP" property="testDate" />
+  </resultMap>
+
+  <select id="selectAllTestEntity"  resultMap="BaseResultMap">
+    select * from test_entity
+  </select>
+
+</mapper>

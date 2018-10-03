@@ -6,12 +6,14 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.funnytree.springbootdemo.entity.TestEntity;
+import com.funnytree.springbootdemo.service.TestEntityService;
 
 /**
  * @Description 测试类controller
@@ -25,6 +27,9 @@ import com.funnytree.springbootdemo.entity.TestEntity;
 @Controller
 public class TestController {
 
+    @Autowired
+    private TestEntityService testEntityService;
+
     @GetMapping("/toPage")
     public ModelAndView toPage(ModelAndView mod, HttpSession httpSession){
         System.out.println(httpSession.getAttribute("888"));
@@ -36,6 +41,11 @@ public class TestController {
     @GetMapping("toBootStrapTest")
     public ModelAndView toBootStrapTest(ModelAndView mod){
         mod.setViewName("bootstrapTest");
+        try {
+            testEntityService.selectAllTestEntity();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return mod;
     }
 
