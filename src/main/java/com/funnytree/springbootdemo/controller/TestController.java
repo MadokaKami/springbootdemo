@@ -60,4 +60,10 @@ public class TestController {
         mod.addObject("testList", testList);
         return mod;
     }
+
+    @GetMapping("/webSocketTest")
+    public ModelAndView toWebSocketTest(ModelAndView mod){
+        mod.setViewName("webSocketTest");
+        return mod;
+    }
 }

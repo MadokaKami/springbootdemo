@@ -1,0 +1,31 @@
+package com.funnytree.springbootdemo.controller;
+
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Controller;
+
+import com.funnytree.springbootdemo.entity.TestEntity;
+import com.funnytree.springbootdemo.entity.WebSocketMsg;
+
+/**
+ * @Description WebSocket控制层
+ * @ClassName WebSocketController
+ * @author 李英夫
+ * @since 2018/10/8 22:59
+ * @version V1.0.0
+ * @Copyright (c) All Rights Reserved, 2018.
+ */
+@Controller
+public class WebSocketController {
+
+    //用于转发数据(sendTo)
+    private SimpMessagingTemplate template;
+
+    @MessageMapping("/testEntityOperate")
+    @SendTo("/topic/testEntityOperateSendTo")
+    public WebSocketMsg testEntityOperate(TestEntity testEntity){
+        return new WebSocketMsg("哈哈哈");
+    }
+
+}

@@ -14,6 +14,14 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
 
+/**
+ * @Description 阿里连接池监控配置类
+ * @ClassName DruidConfig
+ * @author 李英夫
+ * @since 2018/10/7 20:50
+ * @version V1.0.0
+ * @Copyright (c) All Rights Reserved, 2018.
+ */
 @Configuration
 public class DruidConfig {
     /**
