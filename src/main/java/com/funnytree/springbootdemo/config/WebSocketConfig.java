@@ -1,5 +1,6 @@
 package com.funnytree.springbootdemo.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -23,6 +24,11 @@ import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+    //MessageBroker-n线程
+    //通过WebSocketMessageBrokerStats查看连接信息 通过WebSocketMessageBrokerStats.toString
+
+    @Autowired
+    private WebSocketMessageBrokerStats webSocketMessageBrokerStats;
 
     /**
      * 可以在这里配置handler

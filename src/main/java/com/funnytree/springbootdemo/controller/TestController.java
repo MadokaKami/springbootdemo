@@ -2,7 +2,9 @@ package com.funnytree.springbootdemo.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.funnytree.springbootdemo.entity.TestEntity;
 import com.funnytree.springbootdemo.service.TestEntityService;
 
@@ -34,6 +38,18 @@ public class TestController {
     public ModelAndView toPage(ModelAndView mod, HttpSession httpSession){
         System.out.println(httpSession.getAttribute("888"));
         httpSession.setAttribute("888", "666");
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, String> map = new HashMap<>();
+        map.put("我手机哦", "66600");
+        map.put("dasda", "333搜索44");
+        map.put("456啊啊啊0", "789");
+        String json = null;
+        try {
+            json = objectMapper.writeValueAsString(map);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        mod.addObject("json", json);
         mod.setViewName("test/testPage");
         return mod;
     }
