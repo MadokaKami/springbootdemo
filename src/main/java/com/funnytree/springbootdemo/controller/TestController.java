@@ -50,36 +50,42 @@ public class TestController {
             e.printStackTrace();
         }
         mod.addObject("json", json);
-        mod.setViewName("test/testPage");
+        mod.setViewName("/test/testPage");
         return mod;
     }
 
     @GetMapping("toBootStrapTest")
     public ModelAndView toBootStrapTest(ModelAndView mod){
-        mod.setViewName("bootstrapTest");
         try {
             testEntityService.selectAllTestEntity();
         }catch (Exception e){
             e.printStackTrace();
         }
+        mod.setViewName("/bootstrapTest");
         return mod;
     }
 
-    @RequestMapping("toModalPopHtml")
+    @RequestMapping("/toModalPopHtml")
     public ModelAndView toModalPopHtml(ModelAndView mod){
-        mod.setViewName("modalPopHtml");
         List<TestEntity> testList = new ArrayList<>();
         TestEntity testEntity1 = TestEntity.builder().testInt(1).testString("abcd").testDate(new Date()).build();
         testList.add(testEntity1);
         TestEntity testEntity2 = TestEntity.builder().testInt(2).testString("efgh").testDate(new Date()).build();
         testList.add(testEntity2);
         mod.addObject("testList", testList);
+        mod.setViewName("/modalPopHtml");
         return mod;
     }
 
     @GetMapping("/webSocketTest")
     public ModelAndView toWebSocketTest(ModelAndView mod){
-        mod.setViewName("webSocketTest");
+        mod.setViewName("/webSocketTest");
+        return mod;
+    }
+
+    @GetMapping("/jspTest")
+    public ModelAndView jspTest(ModelAndView mod){
+        mod.setViewName("jspTest");
         return mod;
     }
 }

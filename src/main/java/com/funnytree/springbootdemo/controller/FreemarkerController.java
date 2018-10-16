@@ -32,6 +32,8 @@ public class FreemarkerController {
     @GetMapping("/jumpFtl")
     @ResponseBody
     public ModelAndView jumpFtl(ModelAndView modelAndView){
+        //这里做个说明，freemarker和jsp之间没有冲突，只有thymeleaf和jsp之间有冲突
+        //所以不需要区分ftl和jsp
         modelAndView.setViewName("jumpFtl");
         List<String> list = new ArrayList<>();
         list.add("a");
