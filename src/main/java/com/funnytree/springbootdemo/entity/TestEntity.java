@@ -17,4 +17,12 @@ public class TestEntity {
 
     Date testDate;
 
+    public TestEntity() {
+    }
+
+    public TestEntity(int testInt, String testString, Date testDate) {
+        this.testInt = testInt;
+        this.testString = testString;
+        this.testDate = testDate;
+    }
 }
