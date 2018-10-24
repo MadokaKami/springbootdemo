@@ -2,15 +2,22 @@ package com.funnytree.springbootdemo.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.EventListener;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.simp.broker.SimpleBrokerMessageHandler;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.web.socket.config.WebSocketMessageBrokerStats;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
-import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
+import org.springframework.web.socket.messaging.SessionDisconnectEvent;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @Description WebSocket配置累
@@ -23,6 +30,7 @@ import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
  */
 @Configuration
 @EnableWebSocketMessageBroker
+@Slf4j
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     //MessageBroker-n线程
     //通过WebSocketMessageBrokerStats查看连接信息 通过WebSocketMessageBrokerStats.toString
@@ -38,13 +46,19 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         //拦截器还没有配
-        registry.addEndpoint("/webSocketServer").addInterceptors().setHandshakeHandler(new DefaultHandshakeHandler()).setAllowedOrigins("*");
+        registry.addEndpoint("/webSocketServer").addInterceptors()
+                /*.setHandshakeHandler(new DefaultHandshakeHandler())*/.setAllowedOrigins("*");
         //registry.addEndpoint("/webSocketJsServer").setAllowedOrigins("*").withSockJS();
     }
 
     /**
-     *
      * @param registry 消息代理注册
+     * 下面着重说一下simpMessageBroker的心跳机制
+     * STOMP规范:接收器应该考虑误差范围，所以这里超时三倍之后才会真正断开连接，stompJs设置为2倍
+     * 之前的猜测是错误的，SimpleBrokerMessageHandler关于心跳部分存在BUG，{@code lastWriteTime}这里没有及时更新，线程每次启动都会发送心跳
+     * {@link org.springframework.messaging.simp.broker.SimpleBrokerMessageHandler#startInternal()}，发送心跳的时间完全取决于线程池中线程的延迟
+     * @see SimpleBrokerMessageHandler.SessionInfo#SessionInfo 这里设置了心跳时长
+     * @see SimpleBrokerMessageHandler.HeartbeatTask#run() 这里设置了超时断开
      */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
@@ -64,8 +78,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
          */
         //订阅路径
         registry.enableSimpleBroker("/queue","/topic")
-             //第一个数字表示服务器写入发送心跳的频率，第二个数字是客户端应该多久发送一次心跳(心跳需配合setTaskScheduler才能生效)
-            .setHeartbeatValue(new long[]{8000,8000})
+             //第一个数字表示服务器向客户端发送心跳的频率，第二个数字是客户端应该多久发送一次心跳，超出接收间隔连接失效(心跳需配合setTaskScheduler才能生效)
+             //参数一以服务器端为准，参数二取服务器端参数二与stompJs端outgoing参数的最大值
+
+            .setHeartbeatValue(new long[]{12000,6000})
              //设入线程池
             .setTaskScheduler(te);
 
@@ -104,6 +120,23 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registration.taskExecutor().corePoolSize(4) //设置消息输入通道的线程池线程数(应该设置为CPU数量)
                 .maxPoolSize(Integer.MAX_VALUE)//最大线程数
                 .keepAliveSeconds(60);//线程活动时间
+        registration.interceptors(new ChannelInterceptor(){
+            @Override
+            public Message<?> preSend(Message<?> message, MessageChannel channel) {
+                log.info("输入前");
+                return message;
+            }
+
+            @Override
+            public void postSend(Message<?> message, MessageChannel channel, boolean sent) {
+                log.info("执行输入");
+            }
+
+            @Override
+            public void afterSendCompletion(Message<?> message, MessageChannel channel, boolean sent, Exception ex) {
+                log.info("输入成功");
+            }
+        });
     }
 
 
@@ -113,6 +146,27 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureClientOutboundChannel(ChannelRegistration registration) {
         registration.taskExecutor().corePoolSize(4).maxPoolSize(Integer.MAX_VALUE);
+        registration.interceptors(new ChannelInterceptor(){
+            @Override
+            public Message<?> preSend(Message<?> message, MessageChannel channel) {
+                log.info("输出前");
+                return message;
+            }
+
+            @Override
+            public void postSend(Message<?> message, MessageChannel channel, boolean sent) {
+                log.info("执行输出");
+            }
+
+            @Override
+            public void afterSendCompletion(Message<?> message, MessageChannel channel, boolean sent, Exception ex) {
+                log.info("输出成功");
+            }
+        });
     }
 
+    @EventListener
+    public void onSessionDisconnectEvent (SessionDisconnectEvent event){
+        System.out.println(event.toString());
+    }
 }

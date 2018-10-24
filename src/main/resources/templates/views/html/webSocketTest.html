@@ -70,7 +70,7 @@
      */
     function stompConnecting() {
         stompClient = Stomp.client(socketUrl);
-        stompClient.heartbeat.incoming=8000;
+        stompClient.heartbeat.incoming=5000;
         stompClient.heartbeat.outgoing=8000;
         stompClient.connect({}, connect_callback, error_callback);
     }

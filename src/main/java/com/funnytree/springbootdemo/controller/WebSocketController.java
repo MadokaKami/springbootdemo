@@ -34,9 +34,9 @@ public class WebSocketController {
         return new WebSocketMsg("哈哈哈");
     }
 
-    @Scheduled(cron = "0/5 * * * * ?")
+    /*@Scheduled(cron = "0/5 * * * * ?")
     public void send(){
         template.convertAndSend("/topic/testEntityOperateSendTo", new WebSocketMsg("哈哈哈"));
     }
-
+*/
 }

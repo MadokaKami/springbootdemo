@@ -14,6 +14,8 @@
 
     <link href="../../../static/autocomplete/jquery.autocomplete.css"
           th:href="@{/autocomplete/jquery.autocomplete.css}" type="text/css" rel="stylesheet"/>
+    <link href="../../../static/bootstrap-datetimepicker/bootstrap-datetimepicker.css"
+          th:href="@{/bootstrap-datetimepicker/bootstrap-datetimepicker.css}" type="text/css" rel="stylesheet"/>
 
     <script src="../../../static/jquery.js"
             th:src="@{/jquery.js}" type="text/javascript"></script>
@@ -32,11 +34,16 @@
             th:src="@{/webSocket/stomp.js}" type="text/javascript"></script>
     <script src="../../../static/autocomplete/jquery.autocomplete.js"
             th:src="@{/autocomplete/jquery.autocomplete.js}" type="text/javascript"></script>
+    <script src="../../../static/bootstrap-datetimepicker/bootstrap-datetimepicker.js"
+            th:src="@{/bootstrap-datetimepicker/bootstrap-datetimepicker.js}" type="text/javascript"></script>
+    <script src="../../../static/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js"
+            th:src="@{/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js}" type="text/javascript"></script>
 </head>
 <body>
 <div class="container">
 
     Web Site: <input type="text" id="searchInput" class="form-control"/>
+    <input type="text" id="datePicker" class="form-control">
 
 </div>
 
@@ -95,6 +102,32 @@
         }).result(function(event, row, formatted) {
             //alert($("#searchInput").width());
         });
+
+        $("#datePicker").datetimepicker({
+            format:'yyyy-mm-dd',  //格式  如果只有yyyy-mm-dd那就是0000-00-00
+            autoclose:true,//选择后是否自动关闭
+            minView:2,//最精准的时间选择为日期  0-分 1-时 2-日 3-月
+            language:  'zh-CN', //中文
+            weekStart: 1, //一周从星期几开始
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            //daysOfWeekDisabled:"1,2,3", //一周的周几不能选
+            todayBtn : true,  //在底部是否显示今天
+            todayHighlight :false, //今天是否高亮显示
+            keyboardNavigation:true, //方向图标改变日期  必须要有img文件夹 里面存放图标
+            showMeridian:false,  //是否出现 上下午
+            fontAwesome:true,// 开启fontAwesome图标库支持
+            forceParse: true,//强制性设置日期格式，转换成format格式 ，就是你输入的可能不正规，但是它胡强制尽量解析成你规定的格式（format）默认为：true
+            initialDate: new Date()// 初始化日期时间,在打开时默认选当时的时间，显示在View中。默认值：new Date()  Date or String类型
+            
+            // startDate: "2017-01-01"  //开始时间  ENdDate 结束时间
+        })/*.on("changeDate",function(){
+            var end = $("#end").val();
+            $("#start").datetimepicker("setEndDate",end);
+        })*/;
     });
 </script>
 
