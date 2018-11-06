@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.funnytree.springbootdemo.dao.MiningInfoMapper">
+
+  <resultMap id="BaseResultMap" type="com.funnytree.springbootdemo.entity.MiningInfo">
+    <id column="pk_id" jdbcType="INTEGER" property="pkId" />
+    <result column="mining_rights_type" jdbcType="VARCHAR" property="miningRightsType" />
+    <result column="admin_divisions" jdbcType="VARCHAR" property="adminDivisions" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="license_key" jdbcType="VARCHAR" property="licenseKey" />
+    <result column="mining_rights_name" jdbcType="VARCHAR" property="miningRightsName" />
+    <result column="page_URL" jdbcType="VARCHAR" property="pageURL" />
+    <result column="mining_holding_person" jdbcType="VARCHAR" property="miningHoldingPerson" />
+    <result column="publicity_date" jdbcType="TIMESTAMP" property="publicityDate" />
+  </resultMap>
+
+  <select id="findMiningInfoByQuery" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from mining_info
+    <include refid="where_clause"/>
+  </select>
+  <sql id="Base_Column_List">
+    pk_id, mining_rights_type, admin_divisions, type, license_key, mining_rights_name,
+    page_URL, mining_holding_person, publicity_date
+  </sql>
+
+  <sql id="where_clause">
+    <where>
+      <if test="pkId != null">
+        pk_id = #{pkId,jdbcType=VARCHAR},
+      </if>
+      <if test="miningRightsType != null">
+        mining_rights_type = #{miningRightsType,jdbcType=VARCHAR},
+      </if>
+      <if test="adminDivisions != null">
+        admin_divisions = #{adminDivisions,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="licenseKey != null">
+        license_key = #{licenseKey,jdbcType=VARCHAR},
+      </if>
+      <if test="miningRightsName != null">
+        mining_rights_name = #{miningRightsName,jdbcType=VARCHAR},
+      </if>
+      <if test="pageURL != null">
+        page_URL = #{pageURL,jdbcType=VARCHAR},
+      </if>
+      <if test="miningHoldingPerson != null">
+        mining_holding_person = #{miningHoldingPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="publicityDate != null">
+        publicity_date = #{publicityDate,jdbcType=TIMESTAMP},
+      </if>
+    </where>
+  </sql>
+
+  <insert id="insert" parameterType="com.funnytree.springbootdemo.entity.MiningInfo">
+    insert into mining_info (mining_rights_type, admin_divisions,
+      type, license_key, mining_rights_name,
+      page_URL, mining_holding_person, publicity_date
+      )
+    values (#{miningRightsType,jdbcType=VARCHAR}, #{adminDivisions,jdbcType=VARCHAR},
+      #{type,jdbcType=VARCHAR}, #{licenseKey,jdbcType=VARCHAR}, #{miningRightsName,jdbcType=VARCHAR},
+      #{pageURL,jdbcType=VARCHAR}, #{miningHoldingPerson,jdbcType=VARCHAR}, #{publicityDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.funnytree.springbootdemo.entity.MiningInfo">
+    insert into mining_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="miningRightsType != null">
+        mining_rights_type,
+      </if>
+      <if test="adminDivisions != null">
+        admin_divisions,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="licenseKey != null">
+        license_key,
+      </if>
+      <if test="miningRightsName != null">
+        mining_rights_name,
+      </if>
+      <if test="pageURL != null">
+        page_URL,
+      </if>
+      <if test="miningHoldingPerson != null">
+        mining_holding_person,
+      </if>
+      <if test="publicityDate != null">
+        publicity_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="miningRightsType != null">
+        #{miningRightsType,jdbcType=VARCHAR},
+      </if>
+      <if test="adminDivisions != null">
+        #{adminDivisions,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="licenseKey != null">
+        #{licenseKey,jdbcType=VARCHAR},
+      </if>
+      <if test="miningRightsName != null">
+        #{miningRightsName,jdbcType=VARCHAR},
+      </if>
+      <if test="pageURL != null">
+        #{pageURL,jdbcType=VARCHAR},
+      </if>
+      <if test="miningHoldingPerson != null">
+        #{miningHoldingPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="publicityDate != null">
+        #{publicityDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+</mapper>

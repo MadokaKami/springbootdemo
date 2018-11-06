@@ -14,13 +14,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.funnytree.springbootdemo.entity.MiningInfo;
 import com.funnytree.springbootdemo.entity.TestEntity;
+import com.funnytree.springbootdemo.service.ReptileMineralsService;
 import com.funnytree.springbootdemo.service.TestEntityService;
+import com.funnytree.springbootdemo.utils.pagination.PagingQuery;
+import com.funnytree.springbootdemo.utils.pagination.PagingResult;
+import com.github.pagehelper.Page;
 
 /**
  * @Description 测试类controller
@@ -36,6 +44,9 @@ public class TestController {
 
     @Autowired
     private TestEntityService testEntityService;
+
+    @Autowired
+    private ReptileMineralsService reptileMineralsService;
 
     @GetMapping("/toPage")
     public ModelAndView toPage(ModelAndView mod, HttpSession httpSession){
@@ -105,5 +116,28 @@ public class TestController {
         list.add(q);
         list.add("aaa");
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    /**
+     * 跳转至bootstrap table 样例页面
+     * @param modelAndView modelAndView
+     * @return bootstrap table 样例页面
+     */
+    @GetMapping("/jumpToBootstrapTableDemo")
+    public ModelAndView jumpToBootstrapTableDemo(ModelAndView modelAndView){
+        modelAndView.setViewName("/bootstrapTableDemo");
+        return modelAndView;
+    }
+
+    /**
+     * 分页查询矿权信息
+     * @param query 查询条件
+     * @return 查询结果
+     */
+    @PostMapping("/findMiningInfoList")
+    @ResponseBody
+    public PagingResult<MiningInfo> findMiningInfoList(@RequestBody PagingQuery<MiningInfo> query){
+        Page<MiningInfo> page =  reptileMineralsService.findMiningInfoByQuery(query);
+        return new PagingResult<>(page.getTotal(), page.getResult());
     }
 }

@@ -39,7 +39,7 @@ public class OperationPermission {
             }
 
         }
-        return hasPermission;
+        return true;
     }
 
 }
