@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="true" scanPeriod="60 seconds" debug="true">
+<configuration scan="false" scanPeriod="60 seconds" debug="true">
     <!-- 存放日志文件的要路径 -->
     <substitutionProperty name="rootPath" value="/home/localLogs" />
     <!-- 模块名称， 影响日志配置名，日志文件名 -->

@@ -1,6 +1,7 @@
 package com.funnytree.springbootdemo.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.Message;
@@ -59,16 +60,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
      * {@link org.springframework.messaging.simp.broker.SimpleBrokerMessageHandler#startInternal()}，发送心跳的时间完全取决于线程池中线程的延迟
      * @see SimpleBrokerMessageHandler.SessionInfo#SessionInfo 这里设置了心跳时长
      * @see SimpleBrokerMessageHandler.HeartbeatTask#run() 这里设置了超时断开
+     * @see this#wssHeartbeatThreadPool() 线程池配置
      */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-
-        //线程池配置
-        //对应的解决方法的网址：https://stackoverflow.com/questions/39220647/spring-stomp-over-websockets-not-scheduling-heartbeats
-        ThreadPoolTaskScheduler te = new ThreadPoolTaskScheduler();
-        te.setPoolSize(1);
-        te.setThreadNamePrefix("wss-heartbeat-thread-");
-        te.initialize();
 
         /*
          * 简单消息代理器，以内存做消息代理
@@ -83,7 +78,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
             .setHeartbeatValue(new long[]{12000,6000})
              //设入线程池
-            .setTaskScheduler(te);
+            .setTaskScheduler(wssHeartbeatThreadPool());
 
         //全局订阅消息前缀
         registry.setApplicationDestinationPrefixes("/app");
@@ -168,5 +163,19 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @EventListener
     public void onSessionDisconnectEvent (SessionDisconnectEvent event){
         System.out.println(event.toString());
+    }
+
+    /**
+     * webSocket 线程池
+     */
+    @Bean(destroyMethod = "destroy")
+    public ThreadPoolTaskScheduler wssHeartbeatThreadPool(){
+        //线程池配置
+        //对应的解决方法的网址：https://stackoverflow.com/questions/39220647/spring-stomp-over-websockets-not-scheduling-heartbeats
+        ThreadPoolTaskScheduler te = new ThreadPoolTaskScheduler();
+        te.setPoolSize(1);
+        te.setThreadNamePrefix("wss-heartbeat-thread-");
+        te.initialize();
+        return te;
     }
 }
