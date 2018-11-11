@@ -26,9 +26,9 @@ import com.funnytree.springbootdemo.entity.MiningInfo;
 import com.funnytree.springbootdemo.entity.TestEntity;
 import com.funnytree.springbootdemo.service.ReptileMineralsService;
 import com.funnytree.springbootdemo.service.TestEntityService;
+import com.funnytree.springbootdemo.utils.pagination.PageContainer;
 import com.funnytree.springbootdemo.utils.pagination.PagingQuery;
 import com.funnytree.springbootdemo.utils.pagination.PagingResult;
-import com.github.pagehelper.Page;
 
 /**
  * @Description 测试类controller
@@ -137,7 +137,7 @@ public class TestController {
     @PostMapping("/findMiningInfoList")
     @ResponseBody
     public PagingResult<MiningInfo> findMiningInfoList(@RequestBody PagingQuery<MiningInfo> query){
-        Page<MiningInfo> page =  reptileMineralsService.findMiningInfoByQuery(query);
-        return new PagingResult<>(page.getTotal(), page.getResult());
+        PageContainer<MiningInfo> page =  reptileMineralsService.findMiningInfoByQuery(query);
+        return new PagingResult<>(page.getTotal(), page.getPageResult());
     }
 }

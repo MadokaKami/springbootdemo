@@ -1,12 +1,13 @@
 package com.funnytree.springbootdemo.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.funnytree.springbootdemo.dao.MiningInfoMapper;
 import com.funnytree.springbootdemo.entity.MiningInfo;
+import com.funnytree.springbootdemo.utils.pagination.PageContainer;
 import com.funnytree.springbootdemo.utils.pagination.PagingQuery;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -25,6 +26,9 @@ public class ReptileMineralsService {
     @Autowired
     private MiningInfoMapper miningInfoMapper;
 
+    @Autowired
+    private RedisTemplate<Object, Object> redisTemplate;
+
     public boolean saveMiningInfo(MiningInfo miningInfo){
         miningInfoMapper.insertSelective(miningInfo);
         return true;
@@ -35,10 +39,11 @@ public class ReptileMineralsService {
      * @param query 查询条件
      * @return 开采信息集合
      */
-    public Page<MiningInfo> findMiningInfoByQuery(PagingQuery<MiningInfo> query){
+    @Cacheable("findMiningInfoByQuery")
+    public PageContainer<MiningInfo> findMiningInfoByQuery(PagingQuery<MiningInfo> query){
         Page<MiningInfo> page = PageHelper.offsetPage(query.getOffset(), query.getLimit());
         miningInfoMapper.findMiningInfoByQuery(query.getEntity());
-        return page;
+        return new PageContainer<>(page);
     }
 
 }

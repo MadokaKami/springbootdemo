@@ -48,7 +48,8 @@ public class ControllerAdvice {
         Map<String, Object> map = new HashMap<>();
         map.put("code", 100);
         map.put("msg", ex.getMessage());
-        log.info("异常：{}", map.get("msg"));
+        log.error("异常：{}", map.get("msg"));
+        ex.printStackTrace();
         return map;
     }
 }

@@ -141,12 +141,13 @@
             <scope>provided</scope>
         </dependency>
 
+        <!--thymeleaf3不需要使用html补偿器-->
         <!-- https://mvnrepository.com/artifact/net.sourceforge.nekohtml/nekohtml -->
-        <dependency>
+        <!--<dependency>
             <groupId>net.sourceforge.nekohtml</groupId>
             <artifactId>nekohtml</artifactId>
             <version>1.9.22</version>
-        </dependency>
+        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>

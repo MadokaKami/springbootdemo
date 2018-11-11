@@ -103,7 +103,8 @@
     <logger name="sql" level="INFO"/>
     <logger name="java.sql" level="INFO"/>
     <logger name="javax" level="INFO"/>
-    <logger name="kami.picturefinder" level="debug" />
+    <logger name="com.funnytree.springbootdemo" level="debug" />
+    <logger name="druid.sql.ResultSet" level="INFO" />
 
     <!--日志的输出级别由低到高（越来问题越严重）trace->debug->info->warn->error -->
     <!-- root将级别为DEBUG及大于DEBUG的日志信息交给已经配置好的name='STDOUT'的appender处理，将信息打印到控制台-Console -->
