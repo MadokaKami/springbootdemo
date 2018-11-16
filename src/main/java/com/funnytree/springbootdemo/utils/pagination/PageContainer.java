@@ -1,8 +1,10 @@
 package com.funnytree.springbootdemo.utils.pagination;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
 
 import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +24,7 @@ import lombok.Setter;
 public class PageContainer<T> {
 
     /**Page对象*/
-    ArrayList<T> pageResult;
+    List<T> pageResult;
 
     /**
      * 页码，从1开始
@@ -49,8 +51,14 @@ public class PageContainer<T> {
      */
     private int pages;
 
-    public PageContainer(Page<T> page){
-        this.pageResult = page;
+    public static <T> PageContainer<T> offsetInstance(PagingQuery<T> query, Function<PagingQuery<T>, List<T>> callback){
+        Page<T> page = PageHelper.offsetPage(query.getOffset(), query.getLimit());
+        callback.apply(query);
+        return new PageContainer<>(page);
+    }
+
+    private PageContainer(Page<T> page){
+        this.pageResult = page.getResult();
         this.pageNum = page.getPageNum();
         this.pageSize = page.getPageSize();
         this.startRow = page.getStartRow();

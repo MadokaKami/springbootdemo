@@ -41,9 +41,7 @@ public class ReptileMineralsService {
      */
     @Cacheable("findMiningInfoByQuery")
     public PageContainer<MiningInfo> findMiningInfoByQuery(PagingQuery<MiningInfo> query){
-        Page<MiningInfo> page = PageHelper.offsetPage(query.getOffset(), query.getLimit());
-        miningInfoMapper.findMiningInfoByQuery(query.getEntity());
-        return new PageContainer<>(page);
+        return PageContainer.offsetInstance(query, q -> miningInfoMapper.findMiningInfoByQuery(q.getEntity()));
     }
 
 }
