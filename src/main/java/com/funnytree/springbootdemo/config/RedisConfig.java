@@ -14,6 +14,8 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import com.funnytree.springbootdemo.expand.RedisCacheManagerEx;
+
 /**
  * @Description redis配置类
  * @ClassName RedisConfig
@@ -41,11 +43,12 @@ public class RedisConfig {
         template.setEnableTransactionSupport(true);
         return template;
     }
+
     /**
      * redis缓存配置
      * @see RedisCacheConfiguration 默认配置看这里
      */
-    @Bean
+    @Bean("cacheManager")
     public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
         // 设置CacheManager的值序列化方式为JdkSerializationRedisSerializer,
         // 但其实RedisCacheConfiguration默认就是使用StringRedisSerializer序列化key，JdkSerializationRedisSerializer序列化value,所以以下注释代码为默认实现
@@ -64,7 +67,7 @@ public class RedisConfig {
         // 初始化一个RedisCacheWriter
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory);
         // 返回初始化RedisCacheManager
-        return new RedisCacheManager(redisCacheWriter, resetConfig);
+        return new RedisCacheManagerEx(redisCacheWriter, resetConfig);
     }
 
     /**

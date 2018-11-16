@@ -1,79 +1,35 @@
 package com.funnytree.springbootdemo.config;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.core.Ordered;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
 
+/**
+ * @Description springMvc配置类
+ * @ClassName WebConfig
+ * @author 李英夫
+ * @since 2018/9/8 14:56
+ * @version V1.0.0
+ * @Copyright (c) All Rights Reserved, 2018.
+ */
 @Configuration
 @ComponentScan(includeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Controller.class)}, useDefaultFilters = false)
 public class WebConfig implements WebMvcConfigurer {
 
     @Value("${server.port}")
     private String port;
-
-    /**
-     * jsp视图解析器
-     * @return InternalResourceViewResolver
-     */
-    /*@Bean
-    public InternalResourceViewResolver htmlViewResolver() {
-        InternalResourceViewResolver htmlViewResolver = new InternalResourceViewResolver();
-        htmlViewResolver.setPrefix("/WEB-INF/jsp/");
-        htmlViewResolver.setSuffix(".jsp");
-        htmlViewResolver.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        htmlViewResolver.setContentType("text/html;charset=UTF-8");
-        htmlViewResolver.setViewClass(JstlView.class);
-        return htmlViewResolver;
-    }*/
-
-    /**
-     * html视图解析器
-     * @return InternalResourceViewResolver
-     */
-//    @Bean
-//    public InternalResourceViewResolver htmlViewResolver(){
-//        InternalResourceViewResolver htmlViewResolver = new InternalResourceViewResolver();
-//        htmlViewResolver.setPrefix("/templates/views/html/");
-//        htmlViewResolver.setSuffix(".html");
-//        htmlViewResolver.setOrder(Ordered.HIGHEST_PRECEDENCE);
-//        htmlViewResolver.setContentType("text/html;charset=UTF-8");
-//        return htmlViewResolver;
-//    }
-
-    /**
-     * freemarker视图解析器
-     * @return FreeMarkerViewResolver
-     */
-//    @Bean
-//    public FreeMarkerViewResolver freeMarkerViewResolver(){
-//        FreeMarkerViewResolver freeMarkerViewResolver = new FreeMarkerViewResolver();
-//        freeMarkerViewResolver.setPrefix("/templates/views/ftl/");
-//        freeMarkerViewResolver.setSuffix(".ftl");
-//        freeMarkerViewResolver.setCache(true);
-//        freeMarkerViewResolver.setContentType("text/html;charset=UTF-8");
-//        freeMarkerViewResolver.setOrder(2);
-//        return freeMarkerViewResolver;
-//    }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {

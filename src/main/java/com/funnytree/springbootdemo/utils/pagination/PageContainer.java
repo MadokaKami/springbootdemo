@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * @Description pagehelper Page类包装，便于redis序列化
+ * @Description PageHelper Page类包装，便于redis序列化
  * @ClassName PageContainer
  * @author 李英夫
  * @since 2018/11/12 2:29
@@ -51,12 +51,25 @@ public class PageContainer<T> {
      */
     private int pages;
 
+    /**
+     * pageContainer初始化
+     * @param query 查询条件
+     * @param callback 回调函数，用于调用{@literal dao}层中的数据查询方法
+     * @param <T> 业务对象的数据类型泛型
+     * @return 业务对象的分页查询结果
+     */
     public static <T> PageContainer<T> offsetInstance(PagingQuery<T> query, Function<PagingQuery<T>, List<T>> callback){
+        // 调用PageHelper分页
         Page<T> page = PageHelper.offsetPage(query.getOffset(), query.getLimit());
+        // 执行回调函数
         callback.apply(query);
         return new PageContainer<>(page);
     }
 
+    /**
+     * 通过PageHelper返回的{@literal page}对象建立page包装类
+     * @param page PageHelper返回值
+     */
     private PageContainer(Page<T> page){
         this.pageResult = page.getResult();
         this.pageNum = page.getPageNum();

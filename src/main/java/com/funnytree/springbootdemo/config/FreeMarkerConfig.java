@@ -9,8 +9,16 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import freemarker.template.utility.XmlEscape;
 
+/**
+ * @Description FreeMarker配置类
+ * @ClassName FreeMarkerConfig
+ * @author 李英夫
+ * @since 2018/9/8 16:16
+ * @version V1.0.0
+ * @Copyright (c) All Rights Reserved, 2018.
+ */
 @Configuration
-public class MyConfig {
+public class FreeMarkerConfig {
     @Bean
     public FreeMarkerConfigurer freeMarkerConfigurer(){
         FreeMarkerConfigurer freeMarkerConfigurer = new FreeMarkerConfigurer();

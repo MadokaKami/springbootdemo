@@ -39,7 +39,7 @@ public class ReptileMineralsService {
      * @param query 查询条件
      * @return 开采信息集合
      */
-    @Cacheable("findMiningInfoByQuery")
+    @Cacheable(cacheNames="findMiningInfoByQuery", sync = true)
     public PageContainer<MiningInfo> findMiningInfoByQuery(PagingQuery<MiningInfo> query){
         return PageContainer.offsetInstance(query, q -> miningInfoMapper.findMiningInfoByQuery(q.getEntity()));
     }
